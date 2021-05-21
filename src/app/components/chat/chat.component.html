@@ -1,0 +1,10 @@
+<div class="container">
+    <h1>Chat</h1>
+    <div *ngFor="let message of messages">
+        {{message.nickname}}
+        <br> {{message.text}}
+    </div>
+    <button (click)="message()" class="btn btn-primary">
+      Message
+    </button>
+</div>
