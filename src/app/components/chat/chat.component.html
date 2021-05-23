@@ -1,10 +1,24 @@
 <div class="container">
-    <h1>Chat</h1>
-    <div *ngFor="let message of messages">
-        {{message.nickname}}
-        <br> {{message.text}}
+    <h1>Componente Chat</h1>
+    <p><strong>{{code}}</strong></p>
+    <div *ngFor="let messages of messages">
+        <strong>{{messages.name}}</strong>
+        <p>{{messages.text}}</p>
     </div>
-    <button (click)="message()" class="btn btn-primary">
-      Message
-    </button>
+    <div class="card mt-3">
+        <div class="card-header">
+            Mensajes
+        </div>
+        <div class="card-body">
+            <form #textForm="ngForm" (ngSubmit)="onSumbit(textForm)" (keyup.enter)="onSumbit(textForm)">
+                <div class="mb-3">
+                    <label for="text" class="form-label">Message</label>
+                    <textarea type="text" name="text" class="form-control" [(ngModel)]="message.text" required></textarea>
+                </div>
+
+                <input type="submit" class="btn btn-primary" value="Send" [disabled]="!textForm.valid">
+                <strong>{{ message.text }}</strong>
+            </form>
+        </div>
+    </div>
 </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { IdService } from 'src/app/services/uuid.service';
 
 @Component({
   selector: 'app-home',
@@ -8,15 +9,20 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
+  public code: any;
+  
   constructor(
-    private _router: Router
-  ) { }
-
+    private _router: Router,
+    private IdService: IdService
+  ) { 
+  }
+  
   ngOnInit() {
+    this.code = this.IdService.generate();
   }
 
   redirectChat(){
-    return this._router.navigate(['/chat']);
+    return this._router.navigate(['/chat/' + this.code]);
   }
   
 }

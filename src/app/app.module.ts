@@ -1,18 +1,22 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { appRoutingProviders, routing } from './app.routing';
 
 import { AppComponent } from './app.component';
-import { appRoutingProviders, routing } from './app.routing';
+import { HomeComponent } from './components/home/home.component';
 import { ChatComponent } from './components/chat/chat.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    HomeComponent,
     ChatComponent
   ],
   imports: [
     BrowserModule,
-    routing
+    routing,
+    FormsModule
   ],
   providers: [appRoutingProviders],
   bootstrap: [AppComponent]
