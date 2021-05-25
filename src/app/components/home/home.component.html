@@ -1,6 +1,6 @@
 <!-- Modal Name -->
 <div class="modal fade" id="nameModal" tabindex="-1" aria-labelledby="nameModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Name</h5>
@@ -29,7 +29,7 @@
             <div class="modal-body">
                 <form #createChatModal="ngForm">
                     <div class="mb-3">
-                        <input id="nameInput" type="text" name="nameChat" (ngModel)="chat.nameChat" class="form-control" placeholder="Nombre de chat" required>
+                        <input id="createChatInput" type="text" name="nameChat" (ngModel)="chat.nameChat" class="form-control" placeholder="Nombre de chat" required>
                     </div>
                 </form>
             </div>
@@ -50,12 +50,29 @@
             <div class="modal-body">
                 <form #addChatForm="ngForm">
                     <div class="mb-3">
-                        <input id="nameInput" type="text" name="name" (ngModel)="name" class="form-control" placeholder="Anonimo" required>
+                        <input id="addChatNameInput" type="text" name="nameChat" (ngModel)="chat.nameChat" class="form-control" placeholder="Nombre de chat" required>
+                    </div>
+                    <div class="mb-3">
+                        <input id="addChatCodeInput" type="text" name="codeChat" (ngModel)="chat.codeChat" class="form-control" placeholder="Codigo de chat" required>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" data-bs-dismiss="modal" (click)="saveName(addChatForm)" [disabled]="!nameForm.valid">Save name</button>
+                <button class="btn btn-primary" data-bs-dismiss="modal" (click)="addChat(addChatForm)" [disabled]="!addChatForm.valid">Añadir chat</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Advise -->
+<div class="modal fade" id="adviseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Aviso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Solo se puede tener menos de 6 chats
             </div>
         </div>
     </div>
@@ -89,14 +106,23 @@
 </nav>
 <!-- Container -->
 <div class="container">
+    <!-- Toast -->
+    <div aria-live="polite" aria-atomic="true" class="bg-dark position-relative bd-example-toasts">
+        <div class="toast-container position-absolute pt-2 top-0 end-0">
+            <div class="toast shadow-sm" id="copiedCode">
+                <div class="toast-body">
+                    Código copiado!
+                </div>
+            </div>
+        </div>
+    </div>
     <h1>Mis chats</h1>
     <div *ngIf="chats.length > 0">
-        <div class="card mt-3" *ngFor="let chatMostrar of chatsMostrar">
-            <div class="card-header">
-                <span>{{ chatMostrar.nameChat }}</span><span> código: {{ chatMostrar.codeChat }}</span>
-            </div>
+        <div class="card mt-3" *ngFor="let chats of chats">
             <div class="card-body">
-                <button (click)="redirectChat(chatMostrar.codeChat)" class="btn btn-primary">
+                <span>{{ chats.nameChat }}</span> código: <span>{{ chats.codeChat }}</span>
+                <button class="btn btn-warning ms-3" (click)="copyCode(chats.codeChat)">Copy</button>
+                <button (click)="redirectChat(chats.codeChat)" class="btn btn-primary ms-3">
                     Ir a chat
                 </button>
             </div>

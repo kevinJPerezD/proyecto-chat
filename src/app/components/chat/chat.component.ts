@@ -31,8 +31,6 @@ export class ChatComponent implements OnInit {
     if(this.cookieService.get('cookie-name')){
       this.name = JSON.parse(this.cookieService.get('cookie-name'));
     }
-    // Setear con la salas
-    this.webSocketService.emit('join', this.code);
     // El mensaje que envía (base)
     this.message = {
       code: this.code,
@@ -42,8 +40,10 @@ export class ChatComponent implements OnInit {
     // Para guardar mensajes
     this.messages = new Array();
   }
-
+  
   ngOnInit() {
+    // Setear con la salas
+    this.webSocketService.emit('join', this.code);
     // Para tomarlo
     if(this.cookieService.get('cookie-messages')){
       this.cookieMessageArray = JSON.parse(this.cookieService.get('cookie-messages'));
@@ -51,6 +51,8 @@ export class ChatComponent implements OnInit {
     }
     // Recibir mensajes
     this.webSocketService.listen('messages').subscribe((data) => {
+      console.log(data);
+      
       this.messages.push(data);
       // Para crear cookie de mensaje
       this.cookieService.set('cookie-messages', JSON.stringify(this.messages));
@@ -61,4 +63,5 @@ export class ChatComponent implements OnInit {
     this.webSocketService.emit('add-message', this.message);
     form.reset();
   }
+  
 }
