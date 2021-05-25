@@ -1,7 +1,105 @@
+<!-- Modal Name -->
+<div class="modal fade" id="nameModal" tabindex="-1" aria-labelledby="nameModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Name</h5>
+            </div>
+            <div class="modal-body">
+                <form #nameForm="ngForm">
+                    <div class="mb-3">
+                        <input id="nameInput" type="text" name="name" (ngModel)="name" class="form-control" placeholder="Anonimo" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-dismiss="modal" (click)="saveName(nameForm)" [disabled]="!nameForm.valid">Save name</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal CreateChat -->
+<div class="modal fade" id="createChatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Crear chat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #createChatModal="ngForm">
+                    <div class="mb-3">
+                        <input id="nameInput" type="text" name="nameChat" (ngModel)="chat.nameChat" class="form-control" placeholder="Nombre de chat" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-dismiss="modal" (click)="createChat(createChatModal)" [disabled]="!createChatModal.valid">Crear chat</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal AddChat -->
+<div class="modal fade" id="addChatModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Añadir chat</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form #addChatForm="ngForm">
+                    <div class="mb-3">
+                        <input id="nameInput" type="text" name="name" (ngModel)="name" class="form-control" placeholder="Anonimo" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-dismiss="modal" (click)="saveName(addChatForm)" [disabled]="!nameForm.valid">Save name</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- NavBar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <span class="navbar-brand">LocMer</span><span *ngIf="name != 'Anonimo'">: Bienvenido {{ name }}</span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul id="links" class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <span class="nav-link active links" aria-current="page" (click)="showModal('createChatModal')">Crear
+                        Chat</span>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link active links" aria-current="page" (click)="showModal('addChatModal')">Añadir
+                        Chat</span>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link active links" aria-current="page" href="#">Configuracion</span>
+                </li>
+                <li class="nav-item">
+                    <span class="nav-link active links" aria-current="page" href="#">Acerca de</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Container -->
 <div class="container">
-    <h1>Componente Home</h1>
-    <p>Tu código <strong>{{ code }}</strong> </p>
-    <button (click)="redirectChat()" class="btn btn-primary">
-    Ir a chat
-  </button>
+    <h1>Mis chats</h1>
+    <div *ngIf="chats.length > 0">
+        <div class="card mt-3" *ngFor="let chatMostrar of chatsMostrar">
+            <div class="card-header">
+                <span>{{ chatMostrar.nameChat }}</span><span> código: {{ chatMostrar.codeChat }}</span>
+            </div>
+            <div class="card-body">
+                <button (click)="redirectChat(chatMostrar.codeChat)" class="btn btn-primary">
+                    Ir a chat
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
