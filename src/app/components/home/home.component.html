@@ -106,25 +106,17 @@
 </nav>
 <!-- Container -->
 <div class="container">
-    <!-- Toast -->
-    <div aria-live="polite" aria-atomic="true" class="bg-dark position-relative bd-example-toasts">
-        <div class="toast-container position-absolute pt-2 top-0 end-0">
-            <div class="toast shadow-sm" id="copiedCode">
-                <div class="toast-body">
-                    Código copiado!
-                </div>
-            </div>
-        </div>
-    </div>
     <h1>Mis chats</h1>
     <div *ngIf="chats.length > 0">
         <div class="card mt-3" *ngFor="let chats of chats">
             <div class="card-body">
-                <span>{{ chats.nameChat }}</span> código: <span>{{ chats.codeChat }}</span>
+                <p>{{ chats.nameChat }}</p>
+                <p>código: {{ chats.codeChat }}</p>
                 <button class="btn btn-warning ms-3" (click)="copyCode(chats.codeChat)">Copy</button>
                 <button (click)="redirectChat(chats.codeChat)" class="btn btn-primary ms-3">
                     Ir a chat
                 </button>
+                <button class="btn btn-danger ms-3" (click)="deleteChat(chats.codeChat)">Eliminar</button>
             </div>
         </div>
     </div>

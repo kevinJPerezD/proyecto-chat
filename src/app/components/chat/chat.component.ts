@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ClipboardService } from 'ngx-clipboard';
 import { CookieService } from 'ngx-cookie-service';
 import { WebSocketService } from 'src/app/services/socket.service';
 
@@ -22,14 +23,16 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private _route: ActivatedRoute,
-    private cookieService: CookieService,
-    private webSocketService: WebSocketService
+    private _router: Router,
+    private _cookieService: CookieService,
+    private _clipboardService: ClipboardService,
+    private _webSocketService: WebSocketService
   ) {
     this._route.params.subscribe((params) => {
       this.code = params.code;
     });
-    if(this.cookieService.get('cookie-name')){
-      this.name = JSON.parse(this.cookieService.get('cookie-name'));
+    if(this._cookieService.get('cookie-name')){
+      this.name = JSON.parse(this._cookieService.get('cookie-name'));
     }
     // El mensaje que envía (base)
     this.message = {
@@ -42,26 +45,32 @@ export class ChatComponent implements OnInit {
   }
   
   ngOnInit() {
-    // Setear con la salas
-    this.webSocketService.emit('join', this.code);
     // Para tomarlo
-    if(this.cookieService.get('cookie-messages')){
-      this.cookieMessageArray = JSON.parse(this.cookieService.get('cookie-messages'));
+    if(this._cookieService.get('cookie-messages')){
+      this.cookieMessageArray = JSON.parse(this._cookieService.get('cookie-messages'));
       this.messages = this.cookieMessageArray;
     }
     // Recibir mensajes
-    this.webSocketService.listen('messages').subscribe((data) => {
+    /* this._webSocketService.listen(this.code).subscribe((data) => {
       console.log(data);
       
       this.messages.push(data);
       // Para crear cookie de mensaje
-      this.cookieService.set('cookie-messages', JSON.stringify(this.messages));
-    });
+      this._cookieService.set('cookie-messages', JSON.stringify(this.messages));
+    }); */
   }
 
   onSumbit(form: any) {
-    this.webSocketService.emit('add-message', this.message);
+    this._webSocketService.emit('add-message', this.message);
     form.reset();
+  }
+
+  redirectHome() {
+    return this._router.navigate(['']);
+  }
+
+  copyCode(codeChat: any) {
+    this._clipboardService.copyFromContent(codeChat);
   }
   
 }

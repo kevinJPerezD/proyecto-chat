@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClipboardService } from 'ngx-clipboard';
 import { CookieService } from 'ngx-cookie-service';
-import { IdService } from 'src/app/services/uuid.service';
+import { ChatService } from 'src/app/services/chat.service';
 
 declare var $: any;
 @Component({
@@ -11,24 +11,38 @@ declare var $: any;
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  public codeUser: any;
+  // Nombre
   public name: string;
   // Nuevo chat
   public chat: any;
   public chats: any[];
+  // Mensajes
+  public messages: any[];
 
   constructor(
     private _router: Router,
-    private _IdService: IdService,
+    private _chatService: ChatService,
     private _cookieService: CookieService,
     private _clipboardService: ClipboardService
   ) {
     this.name = 'Anonimo';
     this.chats = new Array();
+    this.messages = new Array();
+    // Para document ready
+    var cookieService = this._cookieService;
+    var chatService = this._chatService;
+    var chatsReady = this.chats;
+    var messagesReady = this.messages;
+    $(document).ready(function () {
+      // Para cargar chats de la cookie
+      if (cookieService.get('cookie-chats')) {
+        chatsReady = JSON.parse(cookieService.get('cookie-chats'));
+        chatService.joinListenChats(chatsReady, messagesReady);
+      }
+    });
   }
-
+  
   ngOnInit() {
-    // Para cargar chats de la cookie
     if (this._cookieService.get('cookie-chats')) {
       this.chats = JSON.parse(this._cookieService.get('cookie-chats'));
     }
@@ -46,31 +60,30 @@ export class HomeComponent implements OnInit {
 
   saveName(form: any) {
     this.name = form.value.name;
-    this._cookieService.set('cookie-name', JSON.stringify(this.name));
+    this._cookieService.set('cookie-name', JSON.stringify(form.value.name));
   }
 
   createChat(form: any) {
-    if (this.chats.length < 5 && this._cookieService.get('cookie-name')) {
-      this.chat = {
-        nameChat: form.value.nameChat,
-        codeChat: this._IdService.generate(),
-      };
-      this.chats.push(this.chat);
-      this._cookieService.set('cookie-chats', JSON.stringify(this.chats));
-      form.reset();
-    }
+    this._chatService.createChat(
+      this.chats,
+      form.value.nameChat,
+      this.messages
+    );
+    form.reset();
   }
 
   addChat(form: any) {
-    if (this.chats.length < 5 && this._cookieService.get('cookie-name')) {
-      this.chat = {
-        nameChat: form.value.nameChat,
-        codeChat: form.value.codeChat,
-      };
-      this.chats.push(this.chat);
-      this._cookieService.set('cookie-chats', JSON.stringify(this.chats));
-      form.reset();
-    }
+    this._chatService.addChat(
+      this.chats,
+      form.value.nameChat,
+      form.value.codeChat,
+      this.messages
+    );
+    form.reset();
+  }
+
+  deleteChat(codeChat: any) {
+    this._chatService.deleteChat(this.chats, codeChat);
   }
 
   redirectChat(codeChat: any) {
@@ -79,8 +92,6 @@ export class HomeComponent implements OnInit {
 
   copyCode(codeChat: any) {
     this._clipboardService.copyFromContent(codeChat);
-    $('.toast').toast({ delay: 700, animation: false });
-    $('#copiedCode').toast('show');
   }
 
   // JQuery

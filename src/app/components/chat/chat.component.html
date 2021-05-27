@@ -1,6 +1,7 @@
 <div class="container">
     <h1>Componente Chat</h1>
-    <p><strong>{{code}}</strong></p>
+    <p><strong>{{code}}</strong><button class="btn btn-warning" (click)="copyCode(code)">copy</button></p>
+    <button class="btn btn-primary" (click)="redirectHome()">Regresar</button>
     <div *ngFor="let messages of messages">
         <strong>{{messages.name}}</strong>
         <p>{{messages.text}}</p>
