@@ -17,7 +17,7 @@ export class ChatService {
     this.loadPage = true;
   }
 
-  joinListenChats(chats: any[], messages: any[]) {
+  joinListenChats(chats: any[]) {
     if (this.loadPage == true) {
       chats.forEach((chat) => {
         this._webSocketService.emit('leave', chat.codeChat);
@@ -25,24 +25,31 @@ export class ChatService {
         console.log('Unido de salas');
         console.log(chat.codeChat);
         this._webSocketService.listen(chat.codeChat).subscribe((data) => {
+          let messages = JSON.parse(this._cookieService.get(chat.codeChat));
+          console.log('Messages en coookie');
+          console.log(messages);          
+          console.log('Messages en Data');          
           console.log(data);
           messages.push(data);
-          this._cookieService.set('cookie-messages', JSON.stringify(messages));
+          console.log('push a mensajes');
+          this._cookieService.set(chat.codeChat, JSON.stringify(messages));
+          console.log("Set cookie");
         });
       });
       this.loadPage = false;
     }
   }
 
-  listenChat(codeChat: any, messages: any[]) {
+  listenChat(codeChat: any) {
     this._webSocketService.listen(codeChat).subscribe((data) => {
+    //   var messages = JSON.parse(this._cookieService.get(codeChat));
+    //   messages.push(data);
+      this._cookieService.set(codeChat, JSON.stringify(data));
       console.log(data);
-      messages.push(data);
-      this._cookieService.set('cookie-messages', JSON.stringify(messages));
     });
   }
 
-  createChat(chats: any[], nameChat: any, messages: any[]) {
+  createChat(chats: any[], nameChat: any) {
     if (chats.length < 5 && this._cookieService.get('cookie-name')) {
       let chat = {
         nameChat: nameChat,
@@ -50,14 +57,15 @@ export class ChatService {
       };
       chats.push(chat);
       this._cookieService.set('cookie-chats', JSON.stringify(chats));
+      this._cookieService.set(chat.codeChat, JSON.stringify(new Array()));
       this._webSocketService.emit('join', chat.codeChat);
-      this.listenChat(chat.codeChat, messages);
+      this.listenChat(chat.codeChat);
       console.log('Unido sala');
       console.log(chat.codeChat);
     }
   }
-
-  addChat(chats: any[], nameChat: any, codeChat: any, messages: any[]) {
+  
+  addChat(chats: any[], nameChat: any, codeChat: any) {
     if (chats.length < 5 && this._cookieService.get('cookie-name')) {
       let chat = {
         nameChat: nameChat,
@@ -65,9 +73,12 @@ export class ChatService {
       };
       chats.push(chat);
       this._cookieService.set('cookie-chats', JSON.stringify(chats));
+      let messages = new Array();
+      this._cookieService.set(codeChat, JSON.stringify(messages));
       this._webSocketService.emit('join', chat.codeChat);
-      this.listenChat(chat.codeChat, messages);
-      console.log('Unido sala');
+      this.listenChat(chat.codeChat);
+      console.log('Unido sala y messages');
+      console.log(messages);
       console.log(chat.codeChat);
     }
   }
@@ -79,9 +90,9 @@ export class ChatService {
         chats.splice(i, 1);
         if (chats.length === 0) {
           this._cookieService.delete('cookie-chats');
-          this._cookieService.delete('cookie-messages');
+          this._cookieService.delete(codeChat);
         } else {
-          this._cookieService.set('cookie-chats', JSON.stringify(chats));
+          this._cookieService.set(codeChat, JSON.stringify(chats));
         }
       }
     }

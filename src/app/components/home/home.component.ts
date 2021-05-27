@@ -28,23 +28,14 @@ export class HomeComponent implements OnInit {
     this.name = 'Anonimo';
     this.chats = new Array();
     this.messages = new Array();
-    // Para document ready
-    var cookieService = this._cookieService;
-    var chatService = this._chatService;
-    var chatsReady = this.chats;
-    var messagesReady = this.messages;
-    $(document).ready(function () {
-      // Para cargar chats de la cookie
-      if (cookieService.get('cookie-chats')) {
-        chatsReady = JSON.parse(cookieService.get('cookie-chats'));
-        chatService.joinListenChats(chatsReady, messagesReady);
-      }
-    });
   }
   
   ngOnInit() {
     if (this._cookieService.get('cookie-chats')) {
       this.chats = JSON.parse(this._cookieService.get('cookie-chats'));
+      this._chatService.joinListenChats(this.chats);
+      console.log(this.chats);
+      
     }
     // Para nombre
     if (this._cookieService.get('cookie-name')) {
@@ -66,8 +57,7 @@ export class HomeComponent implements OnInit {
   createChat(form: any) {
     this._chatService.createChat(
       this.chats,
-      form.value.nameChat,
-      this.messages
+      form.value.nameChat
     );
     form.reset();
   }
@@ -76,8 +66,7 @@ export class HomeComponent implements OnInit {
     this._chatService.addChat(
       this.chats,
       form.value.nameChat,
-      form.value.codeChat,
-      this.messages
+      form.value.codeChat
     );
     form.reset();
   }
@@ -87,7 +76,7 @@ export class HomeComponent implements OnInit {
   }
 
   redirectChat(codeChat: any) {
-    return this._router.navigate(['/chat/' + codeChat]);
+    this._router.navigate(['/chat/' + codeChat]);
   }
 
   copyCode(codeChat: any) {
