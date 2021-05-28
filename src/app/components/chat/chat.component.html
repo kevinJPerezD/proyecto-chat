@@ -2,16 +2,19 @@
     <h1>Componente Chat</h1>
     <p><strong>{{codeChat}}</strong><button class="btn btn-warning" (click)="copyCode(codeChat)">copy</button></p>
     <button class="btn btn-primary" (click)="redirectHome()">Regresar</button>
-    <!-- <div *ngFor="let messages of messages">
-        <strong>{{messages.name}}</strong>
-        <p>{{messages.text}}</p>
-    </div> -->
+    <div id="messages">
+        <div *ngFor="let messages of messages">
+            <strong>{{messages.name}}</strong>
+            <p>{{messages.text}}</p>
+        </div>
+    </div>
+
     <div class="card mt-3">
         <div class="card-header">
             Mensajes
         </div>
         <div class="card-body">
-            <form #textForm="ngForm" (ngSubmit)="onSumbit(textForm)" (keyup.enter)="onSumbit(textForm)">
+            <form #textForm="ngForm" (ngSubmit)="sendMessage(textForm)" (keyup.enter)="sendMessage(textForm)">
                 <div class="mb-3">
                     <label for="text" class="form-label">Message</label>
                     <textarea type="text" name="text" class="form-control" [(ngModel)]="message.text" required></textarea>

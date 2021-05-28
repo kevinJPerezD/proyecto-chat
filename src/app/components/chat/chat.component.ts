@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ClipboardService } from 'ngx-clipboard';
 import { CookieService } from 'ngx-cookie-service';
-import { ChatService } from 'src/app/services/chat.service';
 import { WebSocketService } from 'src/app/services/socket.service';
 
+declare var $: any;
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -19,22 +19,25 @@ export class ChatComponent implements OnInit {
   public message: any;
   // Chats
   public chats: any[];
+  public listen: any;
 
   constructor(
     private _route: ActivatedRoute,
     private _router: Router,
     private _cookieService: CookieService,
     private _clipboardService: ClipboardService,
-    private _webSocketService: WebSocketService,
-    private _chatService: ChatService,
+    private _webSocketService: WebSocketService
   ) {
     this._route.params.subscribe((params) => {
       this.codeChat = params.code;
     });
     // Obtener el nombre
-    if(this._cookieService.get('cookie-name')){
+    if (
+      this._cookieService.get('cookie-name') &&
+      this._cookieService.get(this.codeChat)
+    ) {
       this.name = JSON.parse(this._cookieService.get('cookie-name'));
-    }else{
+    } else {
       this._router.navigate(['']);
     }
     // El mensaje que envía (base)
@@ -46,33 +49,50 @@ export class ChatComponent implements OnInit {
     // Para guardar mensajes
     this.messages = new Array();
     this.chats = new Array();
-  }
-  
-  ngOnInit() {
-    /* if (this._cookieService.get('cookie-chats')) {
-      this.chats = JSON.parse(this._cookieService.get('cookie-chats'));
-      this._chatService.joinListenChats(this.chats);
-    } */
-    // Para tomarlo
-    if(this._cookieService.get(this.codeChat)){
-      this.messages = JSON.parse(this._cookieService.get(this.codeChat));
-      console.log("messages al cargar chat");
-      console.log(this.messages);
-      console.log("------------------------");
-    }
+    this.listen = true;
   }
 
-  onSumbit(form: any) {
-    this._webSocketService.emit('add-message', this.message);
+  ngOnInit() {
+    // Tomar messages
+    if (this._cookieService.get(this.codeChat)) {
+      this.messages = JSON.parse(this._cookieService.get(this.codeChat));
+    }
+    // Escuchar
+    this._webSocketService.on(this.codeChat).subscribe((data: any) => {
+      console.log(data);
+      this.messages.push(data);
+      this.render(this.messages);
+    });
+  }
+
+  render(data: any) {
+    var html = data
+      .map(function (message: any, index: any) {
+        return `
+            <div class="message">
+                <strong>${message.nickname}</strong> dice:
+                <p>${message.text}</p>
+            </div>
+        `;
+      })
+      .join(' ');
+
+    var div_msg = $('messages');
+    div_msg.innerHTML = html;
+    div_msg.scrollTop = div_msg.scrollHeight;
+  }
+
+  sendMessage(form: any) {
+    this._webSocketService.emit('message', this.message);
     form.reset();
   }
 
   redirectHome() {
+    this._cookieService.set(this.codeChat, JSON.stringify(this.messages));
     this._router.navigate(['']);
   }
 
   copyCode(codeChat: any) {
     this._clipboardService.copyFromContent(codeChat);
   }
-  
 }

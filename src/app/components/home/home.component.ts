@@ -34,8 +34,6 @@ export class HomeComponent implements OnInit {
     if (this._cookieService.get('cookie-chats')) {
       this.chats = JSON.parse(this._cookieService.get('cookie-chats'));
       this._chatService.joinListenChats(this.chats);
-      console.log(this.chats);
-      
     }
     // Para nombre
     if (this._cookieService.get('cookie-name')) {
@@ -70,7 +68,7 @@ export class HomeComponent implements OnInit {
     );
     form.reset();
   }
-
+  
   deleteChat(codeChat: any) {
     this._chatService.deleteChat(this.chats, codeChat);
   }

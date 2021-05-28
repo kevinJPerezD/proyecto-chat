@@ -14,16 +14,17 @@ export class WebSocketService {
     this.socket = io(this.url);
    }
 
-  listen(eventName: string){
+  on(eventName: string){
     return new Observable((suscriber) => {
       this.socket.on(eventName, (data: any) => {
         suscriber.next(data);
       })
     });
   }
-  
+
   emit(eventName: string, data: any){
     this.socket.emit(eventName, data);
   }
+
   
 }
