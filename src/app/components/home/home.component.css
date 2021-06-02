@@ -1,3 +1,42 @@
 .toast-container {
     width: 132px;
 }
+body{
+    background-color:lightblue;
+}
+.nav-item{
+    font-family: 'Rajdhani';
+    font-weight: bold;
+    font-size: 20px;
+}
+.navbar-brand{
+    font-family: Holtwood One SC;
+    color: #1D415A;
+}
+.text{
+    font-family: Aclonica;
+    color: #a75715;
+}
+.card-title{
+    font-family:Suez One;
+}
+.card{
+    background-color: lightgoldenrodyellow;
+}
+#colores{
+    background-color: #6AF5B0;
+    border-color: lightseagreen;
+    font-family: 'Fjalla One';
+}
+#colos{
+    background-color: #FF6BE6;
+    border-color: #ee3fd1;
+    font-family: 'Fjalla One';
+    color: black;
+}
+#color{
+    background-color: #A56AF5;
+    border-color: rgb(120, 32, 178);
+    font-family: 'Fjalla One';
+    color: black;
+}
