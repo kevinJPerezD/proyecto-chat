@@ -7,7 +7,7 @@ import { ChatComponent } from "./components/chat/chat.component";
 
 const appRoutes: Routes = [
     {path: '', component: HomeComponent},
-    {path: 'chat/:code', component: ChatComponent},
+    {path: 'chat/:name/:code', component: ChatComponent},
     {path: '**', component: HomeComponent}
 ];
 

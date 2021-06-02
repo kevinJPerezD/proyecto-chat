@@ -1,7 +1,7 @@
 <div class="container">
     <h1>Componente Chat</h1>
     <p><strong>{{codeChat}}</strong><button class="btn btn-warning" (click)="copyCode(codeChat)">copy</button></p>
-    <button class="btn btn-primary" (click)="redirectHome()">Regresar</button>
+    <a class="btn btn-primary" routerLink="/home">Regresar</a>
     <div id="messages">
         <div *ngFor="let messages of messages">
             <strong>{{messages.name}}</strong>
@@ -10,16 +10,9 @@
     </div>
 
     <div class="card mt-3">
-        <div class="card-header">
-            Mensajes
-        </div>
         <div class="card-body">
-            <form #textForm="ngForm" (ngSubmit)="sendMessage(textForm)" (keyup.enter)="sendMessage(textForm)">
-                <div class="mb-3">
-                    <label for="text" class="form-label">Message</label>
-                    <textarea type="text" name="text" class="form-control" [(ngModel)]="message.text" required></textarea>
-                </div>
-
+            <form #textForm="ngForm" class="d-flex flex-row" (ngSubmit)="sendMessage(textForm)" (keyup.enter)="sendMessage(textForm)">
+                <input type="text" name="text" class="form-control" [(ngModel)]="message.text" placeholder="Mensage" required>
                 <input type="submit" class="btn btn-primary" value="Send" [disabled]="!textForm.valid">
             </form>
         </div>

@@ -73,10 +73,6 @@ export class HomeComponent implements OnInit {
     this._chatService.deleteChat(this.chats, codeChat);
   }
 
-  redirectChat(codeChat: any) {
-    this._router.navigate(['/chat/' + codeChat]);
-  }
-
   copyCode(codeChat: any) {
     this._clipboardService.copyFromContent(codeChat);
   }

@@ -18,8 +18,8 @@ export class ChatComponent implements OnInit {
   public name: any;
   public message: any;
   // Chats
+  public nameChat: any;
   public chats: any[];
-  public listen: any;
 
   constructor(
     private _route: ActivatedRoute,
@@ -30,6 +30,7 @@ export class ChatComponent implements OnInit {
   ) {
     this._route.params.subscribe((params) => {
       this.codeChat = params.code;
+      this.nameChat = params.name;
     });
     // Obtener el nombre
     if (
@@ -49,7 +50,6 @@ export class ChatComponent implements OnInit {
     // Para guardar mensajes
     this.messages = new Array();
     this.chats = new Array();
-    this.listen = true;
   }
 
   ngOnInit() {
@@ -85,11 +85,6 @@ export class ChatComponent implements OnInit {
   sendMessage(form: any) {
     this._webSocketService.emit('message', this.message);
     form.reset();
-  }
-
-  redirectHome() {
-    this._cookieService.set(this.codeChat, JSON.stringify(this.messages));
-    this._router.navigate(['']);
   }
 
   copyCode(codeChat: any) {
