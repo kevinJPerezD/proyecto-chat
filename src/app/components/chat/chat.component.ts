@@ -54,32 +54,22 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     // Tomar messages
+    var div = $("#messages");
+    $('#messagesChat').ready(function(){
+      div.scrollTop(div.prop('scrollHeight'));
+    });
+    
     if (this._cookieService.get(this.codeChat)) {
       this.messages = JSON.parse(this._cookieService.get(this.codeChat));
     }
+    
     // Escuchar
     this._webSocketService.on(this.codeChat).subscribe((data: any) => {
-      console.log(data);
       this.messages.push(data);
-      this.render(this.messages);
+      $('#messagesChat').ready(function(){
+        div.scrollTop(div.prop('scrollHeight'));
+      });
     });
-  }
-
-  render(data: any) {
-    var html = data
-      .map(function (message: any, index: any) {
-        return `
-            <div class="message">
-                <strong>${message.nickname}</strong> dice:
-                <p>${message.text}</p>
-            </div>
-        `;
-      })
-      .join(' ');
-
-    var div_msg = $('messages');
-    div_msg.innerHTML = html;
-    div_msg.scrollTop = div_msg.scrollHeight;
   }
 
   sendMessage(form: any) {

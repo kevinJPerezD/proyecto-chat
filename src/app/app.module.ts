@@ -9,12 +9,14 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { AboutComponent } from './components/about/about.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ChatComponent
+    ChatComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

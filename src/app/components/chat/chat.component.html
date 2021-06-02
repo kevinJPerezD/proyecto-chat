@@ -1,17 +1,17 @@
-<div class="container">
-    <h1>Componente Chat</h1>
-    <p><strong>{{codeChat}}</strong><button class="btn btn-warning" (click)="copyCode(codeChat)">copy</button></p>
-    <a class="btn btn-primary" routerLink="/home">Regresar</a>
+<div class="container p-2">
+    <a class="btn btn-primary btn-sm" routerLink="/home">Regresar</a>
+    <h1>{{nameChat}}</h1>
+    <p><span class="text-muted">Código: {{codeChat}}  </span><button class="btn btn-outline-secondary btn-sm" (click)="copyCode(codeChat)">Copiar</button></p>
     <div id="messages">
-        <div *ngFor="let messages of messages">
-            <strong>{{messages.name}}</strong>
-            <p>{{messages.text}}</p>
+        <div id="messagesChat" *ngFor="let messages of messages">
+            <strong [ngClass]="messages.name === name ? 'd-flex justify-content-end me-4' : 'ms-3'">{{messages.name}}</strong>
+            <p [ngClass]="messages.name === name ? 'd-flex justify-content-end me-4' : 'ms-3'">{{messages.text}}</p>
         </div>
     </div>
 
     <div class="card mt-3">
         <div class="card-body">
-            <form #textForm="ngForm" class="d-flex flex-row" (ngSubmit)="sendMessage(textForm)" (keyup.enter)="sendMessage(textForm)">
+            <form #textForm="ngForm" class="d-flex flex-row" (ngSubmit)="sendMessage(textForm)">
                 <input type="text" name="text" class="form-control" [(ngModel)]="message.text" placeholder="Mensage" required>
                 <input type="submit" class="btn btn-primary" value="Send" [disabled]="!textForm.valid">
             </form>
