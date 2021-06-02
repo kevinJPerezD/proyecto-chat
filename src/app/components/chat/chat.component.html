@@ -1,27 +1,49 @@
-<div class="container">
-    <h1>Componente Chat</h1>
-    <p><strong>{{codeChat}}</strong><button class="btn btn-warning" (click)="copyCode(codeChat)">copy</button></p>
-    <button class="btn btn-primary" (click)="redirectHome()">Regresar</button>
+<!-- Link --> 
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Gayathri&family=Handlee&family=Merienda&family=Aclonica&family=Holtwood+One+SC&family=Rajdhani:wght@300&family=Staatliches&family=Suez+One&family=Viga&family=Fjalla+One&display=swap" rel="stylesheet">
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <span class="navbar-brand"> <h3>LocMer</h3></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul id="links" class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <span class="nav-link active links" aria-current="page" (click)="copyCode(codeChat)">Copiar Código</span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link active links" aria-current="page"  (click)="redirectHome()">Regresar</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--Container-->
+    <div class="container">
+    <span><strong><h3 class="g3">Chat: {{codeChat}}</h3></strong></span>
     <div id="messages">
         <div *ngFor="let messages of messages">
-            <strong>{{messages.name}}</strong>
-            <p>{{messages.text}}</p>
+            <strong class="m">{{messages.name}}</strong>
+            <p class="men">{{messages.text}}</p>
         </div>
     </div>
-
-    <div class="card mt-3">
+    
+    <div class="card mt-3" id="card1">
         <div class="card-header">
             Mensajes
         </div>
-        <div class="card-body">
+        <div class="card-body" >
             <form #textForm="ngForm" (ngSubmit)="sendMessage(textForm)" (keyup.enter)="sendMessage(textForm)">
                 <div class="mb-3">
-                    <label for="text" class="form-label">Message</label>
+                    <label for="text" class="form-label">Escribe un mensaje</label>
                     <textarea type="text" name="text" class="form-control" [(ngModel)]="message.text" required></textarea>
                 </div>
-
-                <input type="submit" class="btn btn-primary" value="Send" [disabled]="!textForm.valid">
+                <input type="submit" id="boto" class="btn btn-primary" value="Enviar" [disabled]="!textForm.valid">
             </form>
         </div>
     </div>
 </div>
+</body>
