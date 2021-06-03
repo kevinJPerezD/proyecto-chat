@@ -63,6 +63,20 @@
         </div>
     </div>
 </div>
+<!-- Modal AddChat validate code-->
+<div class="modal fade" id="addChatModalValidate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="fw-bold">Aviso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Código no válido
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal Advise -->
 <div class="modal fade" id="adviseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -80,7 +94,9 @@
 <!-- NavBar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <span class="navbar-brand" href="#"> <h3>LocMer</h3></span>
+        <span class="navbar-brand">
+            <h3>LocMer</h3>
+        </span>
         <span *ngIf="name != 'Anonimo'"><strong class="fu"> Bienvenido {{ name }}</strong></span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -114,11 +130,12 @@
                         <p class="card-text"><strong>Código:</strong> {{ chats.codeChat }}</p>
                         <button class="btn btn-warning ms-3" id="colores" (click)="copyCode(chats.codeChat)">Copiar</button>
                         <a routerLink="/chat/{{chats.nameChat}}/{{chats.codeChat}}" class="btn btn-primary ms-3" id="color">
-                        Ir al chat
-                    </a>
+                            Ir al chat
+                        </a>
                         <button class="btn btn-danger ms-3" id="colos" (click)="deleteChat(chats.codeChat)">Eliminar</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>

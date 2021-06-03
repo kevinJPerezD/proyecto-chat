@@ -61,12 +61,24 @@ export class HomeComponent implements OnInit {
   }
 
   addChat(form: any) {
-    this._chatService.addChat(
-      this.chats,
-      form.value.nameChat,
-      form.value.codeChat
-    );
-    form.reset();
+    let code = form.value.codeChat;
+    let pass = false;
+    this.chats.forEach(chat => {
+      if(code === chat.codeChat){
+        pass = true;
+      }
+    });
+    if (code.length == 36 && pass == false) {      
+      this._chatService.addChat(
+        this.chats,
+        form.value.nameChat,
+        form.value.codeChat
+        );
+        form.reset();
+      }else{
+        $('#addChatModalValidate').modal('toggle');
+        form.reset();
+      }
   }
   
   deleteChat(codeChat: any) {
